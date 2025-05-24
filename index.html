@@ -1,1684 +1,1922 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VOX Cinemas - PROJECT X</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-
-      body {
-        background: #0d0d0d;
-        color: #ffffff;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      /* شريط VOX العلوي */
-      .vox-header {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        padding: 15px 0;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
-        border-bottom: 1px solid #333;
-      }
-
-      .header-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-      }
-
-      .vox-logo {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #fff;
-        text-decoration: none;
-        letter-spacing: 2px;
-      }
-
-      .header-nav {
-        display: flex;
-        gap: 30px;
-      }
-
-      .nav-item {
-        color: #ccc;
-        text-decoration: none;
-        font-weight: 500;
-        padding: 8px 16px;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .nav-item:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        transform: translateY(-2px);
-      }
-
-      /* بريدكرامب التنقل */
-      .breadcrumb {
-        background: #151515;
-        padding: 15px 0;
-        border-bottom: 1px solid #222;
-      }
-
-      .breadcrumb-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #888;
-      }
-
-      .breadcrumb a {
-        color: #666;
-        text-decoration: none;
-      }
-
-      .breadcrumb a:hover {
-        color: #ccc;
-      }
-
-      /* المراحل */
-      .stage {
-        display: none;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      .stage.active {
-        display: block;
-      }
-
-      /* المرحلة الأولى - إعلان الفوز */
-      .winner-announcement {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        border-radius: 20px;
-        padding: 0;
-        margin: 30px 0;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        border: 1px solid #333;
-      }
-
-      .winner-header {
-        background: linear-gradient(135deg, #333 0%, #444 100%);
-        padding: 30px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        border-bottom: 1px solid #555;
-      }
-
-      .congratulations-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        padding: 8px 20px;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-
-      .winner-title {
-        font-size: 2.8rem;
-        font-weight: 900;
-        color: #fff;
-        margin-bottom: 15px;
-        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        line-height: 1.1;
-      }
-
-      .prize-description {
-        font-size: 1.1rem;
-        color: #ccc;
-        margin-bottom: 0;
-        font-weight: 300;
-      }
-
-      .winner-content {
-        padding: 40px 30px;
-        text-align: center;
-      }
-
-      .prize-showcase {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin: 40px 0;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .ticket-card {
-        background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
-        padding: 25px 15px;
-        border-radius: 15px;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.4s ease;
-        cursor: pointer;
-        border: 1px solid #444;
-      }
-
-      .ticket-card:hover {
-        transform: translateY(-10px) scale(1.05);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-        border-color: #555;
-      }
-
-      .ticket-icon {
-        font-size: 2.5rem;
-        color: #888;
-        margin-bottom: 10px;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
-      }
-
-      .ticket-label {
-        color: #ccc;
-        font-size: 0.9rem;
-        font-weight: bold;
-      }
-
-      .prize-value {
-        background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
-        color: #fff;
-        padding: 20px;
-        border-radius: 15px;
-        margin: 30px 0;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid #444;
-      }
-
-      .value-amount {
-        font-size: 2.2rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #fff;
-      }
-
-      .value-description {
-        font-size: 1rem;
-        color: #ccc;
-      }
-
-      .claim-section {
-        padding: 30px;
-        background: rgba(255, 255, 255, 0.02);
-        margin-top: 20px;
-      }
-
-      .claim-tickets-btn {
-        background: linear-gradient(135deg, #444 0%, #555 100%);
-        color: #fff;
-        border: none;
-        padding: 18px 50px;
-        font-size: 1.3rem;
-        font-weight: bold;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border: 1px solid #666;
-      }
-
-      .claim-tickets-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
-        background: linear-gradient(135deg, #555 0%, #666 100%);
-      }
-
-      .terms-notice {
-        margin-top: 20px;
-        color: #666;
-        font-size: 0.85rem;
-        text-align: center;
-        opacity: 0.8;
-      }
-
-      /* المرحلة الثانية - تفاصيل الفيلم */
-      .movie-details-section {
-        background: #1a1a1a;
-        border-radius: 15px;
-        overflow: hidden;
-        margin: 20px 0;
-        border: 1px solid #333;
-      }
-
-      .movie-header {
-        background: linear-gradient(135deg, #222 0%, #333 100%);
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        border-bottom: 1px solid #444;
-      }
-
-      .movie-poster-small {
-        width: 80px;
-        height: 120px;
-        border-radius: 8px;
-        object-fit: cover;
-        border: 1px solid #444;
-      }
-
-      .movie-info {
-        flex: 1;
-      }
-
-      .movie-title {
-        font-size: 1.8rem;
-        color: #fff;
-        margin-bottom: 5px;
-      }
-
-      .movie-rating-badge {
-        background: #444;
-        color: #fff;
-        padding: 4px 12px;
-        border-radius: 15px;
-        font-size: 0.9rem;
-        font-weight: bold;
-        display: inline-block;
-        margin-bottom: 10px;
-        border: 1px solid #555;
-      }
-
-      .movie-meta {
-        color: #888;
-        font-size: 0.9rem;
-      }
-
-      .media-container {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-        gap: 30px;
-        padding: 30px;
-      }
-
-      .trailer-section {
-        position: relative;
-      }
-
-      .video-wrapper {
-        position: relative;
-        padding-bottom: 56.25%;
-        height: 0;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-        border: 1px solid #333;
-      }
-
-      .video-wrapper iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-      }
-
-      .poster-section {
-        display: flex;
-        justify-content: center;
-      }
-
-      .movie-poster-large {
-        width: 100%;
-        max-width: 300px;
-        border-radius: 10px;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-        border: 1px solid #333;
-      }
-
-      /* اختيار التاريخ والوقت */
-      .booking-controls {
-        background: #222;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0;
-        border: 1px solid #333;
-      }
-
-      .date-time-selector {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
-        align-items: start;
-      }
-
-      .date-section h3,
-      .time-section h3 {
-        color: #fff;
-        margin-bottom: 15px;
-        font-size: 1.1rem;
-      }
-
-      .date-options {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .date-option {
-        background: #333;
-        border: 2px solid transparent;
-        color: #ccc;
-        padding: 12px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: right;
-      }
-
-      .date-option:hover {
-        background: #3d3d3d;
-        color: #fff;
-      }
-
-      .date-option.active {
-        border-color: #666;
-        background: #3d3d3d;
-        color: #fff;
-      }
-
-      .time-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 10px;
-      }
-
-      .cinema-venue {
-        color: #fff;
-        font-weight: bold;
-        margin-bottom: 10px;
-        font-size: 1.1rem;
-      }
-
-      .hall-category {
-        color: #888;
-        font-size: 0.9rem;
-        margin: 10px 0 8px 0;
-      }
-
-      .time-slot {
-        background: #444;
-        color: #ccc;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        position: relative;
-        border: 1px solid #555;
-      }
-
-      .time-slot:hover {
-        background: #555;
-        color: #fff;
-        transform: translateY(-2px);
-      }
-
-      .time-slot.occupied {
-        background: #2a2a2a;
-        color: #666;
-        cursor: not-allowed;
-        opacity: 0.6;
-        border-color: #333;
-      }
-
-      .time-slot.selected {
-        background: #666;
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-        border-color: #777;
-      }
-
-      /* المرحلة الثالثة - اختيار المقاعد */
-      .seats-selection {
-        background: #1a1a1a;
-        border-radius: 15px;
-        padding: 30px;
-        margin: 20px 0;
-        border: 1px solid #333;
-      }
-
-      .booking-info-header {
-        background: #222;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 30px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-        text-align: center;
-        border: 1px solid #333;
-      }
-
-      .info-item h4 {
-        color: #fff;
-        margin-bottom: 5px;
-      }
-
-      .info-item p {
-        color: #888;
-        font-size: 0.9rem;
-      }
-
-      .screen-container {
-        text-align: center;
-        margin: 30px 0;
-      }
-
-      .cinema-screen {
-        width: 60%;
-        height: 40px;
-        background: linear-gradient(45deg, #333, #555);
-        margin: 0 auto 20px;
-        border-radius: 0 0 20px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ccc;
-        font-weight: bold;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-        transform: perspective(300px) rotateX(-15deg);
-        border: 1px solid #666;
-      }
-
-      .screen-label {
-        color: #666;
-        font-size: 0.9rem;
-        margin-top: 10px;
-      }
-
-      /* تخطيط المقاعد */
-      .seats-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px 0;
-      }
-
-      .seats-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        align-items: center;
-      }
-
-      .seat-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .row-label {
-        width: 30px;
-        text-align: center;
-        color: #666;
-        font-weight: bold;
-        font-size: 0.9rem;
-      }
-
-      .row-seats {
-        display: flex;
-        gap: 6px;
-      }
-
-      .seat {
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: bold;
-      }
-
-      .seat.available {
-        background: #333;
-        border: 2px solid #444;
-        color: #666;
-      }
-
-      .seat.selected {
-        background: #666;
-        border: 2px solid #777;
-        color: #fff;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-      }
-
-      .seat.occupied {
-        background: #222;
-        border: 2px solid #333;
-        cursor: not-allowed;
-        opacity: 0.4;
-        color: #444;
-      }
-
-      .seat.premium {
-        background: #444;
-        border: 2px solid #555;
-        color: #888;
-      }
-
-      .seat.premium.selected {
-        background: #666;
-        border: 2px solid #777;
-        color: #fff;
-      }
-
-      .seat:hover:not(.occupied) {
-        transform: scale(1.1);
-        background: #555;
-        color: #fff;
-      }
-
-      /* مفتاح المقاعد */
-      .seat-legend {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin: 30px 0;
-        flex-wrap: wrap;
-      }
-
-      .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #888;
-      }
-
-      .legend-seat {
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-      }
-
-      .legend-seat.available {
-        background: #333;
-        border: 1px solid #444;
-      }
-      .legend-seat.selected {
-        background: #666;
-        border: 1px solid #777;
-      }
-      .legend-seat.occupied {
-        background: #222;
-        border: 1px solid #333;
-      }
-      .legend-seat.premium {
-        background: #444;
-        border: 1px solid #555;
-      }
-
-      /* ملخص الحجز */
-      .booking-summary {
-        background: #222;
-        border-radius: 10px;
-        padding: 25px;
-        margin-top: 30px;
-        border: 1px solid #333;
-      }
-
-      .summary-header {
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-      }
-
-      .summary-details {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-
-      .summary-item {
-        display: flex;
-        justify-content: space-between;
-        color: #888;
-        padding: 8px 0;
-        border-bottom: 1px solid #333;
-      }
-
-      .summary-item .label {
-        font-weight: 500;
-      }
-
-      .summary-item .value {
-        color: #fff;
-        font-weight: bold;
-      }
-
-      .selected-seats-display {
-        background: #333;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 15px 0;
-        border: 1px solid #444;
-      }
-
-      .confirm-button {
-        width: 100%;
-        background: linear-gradient(135deg, #444 0%, #555 100%);
-        color: #fff;
-        border: none;
-        padding: 15px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 1px solid #666;
-      }
-
-      .confirm-button:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-        background: linear-gradient(135deg, #555 0%, #666 100%);
-      }
-
-      .confirm-button:disabled {
-        background: #2a2a2a;
-        cursor: not-allowed;
-        opacity: 0.6;
-        border-color: #333;
-      }
-
-      /* المرحلة الرابعة - تأكيد الحجز */
-      .booking-confirmation {
-        background: #1a1a1a;
-        border-radius: 20px;
-        padding: 0;
-        margin: 30px 0;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        border: 1px solid #333;
-      }
-
-      .confirmation-header {
-        background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
-        padding: 40px 30px;
-        text-align: center;
-        border-bottom: 1px solid #444;
-      }
-
-      .success-icon {
-        font-size: 4rem;
-        color: #666;
-        margin-bottom: 20px;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        50% {
-          transform: scale(1.1);
+
+        body {
+            background: #0d0d0d;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-      }
 
-      .confirmation-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #fff;
-        margin-bottom: 10px;
-      }
-
-      .confirmation-subtitle {
-        color: #888;
-        font-size: 1.1rem;
-      }
-
-      .booking-details {
-        padding: 40px 30px;
-      }
-
-      .booking-reference {
-        background: #222;
-        border: 2px dashed #444;
-        border-radius: 15px;
-        padding: 25px;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-
-      .reference-label {
-        color: #888;
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-      }
-
-      .reference-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #fff;
-        letter-spacing: 3px;
-        font-family: "Courier New", monospace;
-      }
-
-      .ticket-details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin-bottom: 30px;
-      }
-
-      .detail-section {
-        background: #222;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #333;
-      }
-
-      .detail-title {
-        color: #fff;
-        font-weight: bold;
-        margin-bottom: 15px;
-        font-size: 1.1rem;
-      }
-
-      .detail-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid #333;
-        color: #888;
-      }
-
-      .detail-item:last-child {
-        border-bottom: none;
-      }
-
-      .detail-item .value {
-        color: #fff;
-        font-weight: 500;
-      }
-
-      .cost-breakdown {
-        background: #2a2a2a;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 20px 0;
-        border: 1px solid #3d3d3d;
-      }
-
-      .cost-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        color: #888;
-      }
-
-      .cost-item.total {
-        border-top: 2px solid #444;
-        margin-top: 10px;
-        padding-top: 15px;
-        font-weight: bold;
-        color: #fff;
-        font-size: 1.2rem;
-      }
-
-      .cost-item .amount {
-        color: #fff;
-        font-weight: bold;
-      }
-
-      .cost-item.free .amount {
-        color: #666;
-        font-size: 1.5rem;
-      }
-
-      .pickup-instructions {
-        background: #222;
-        border-left: 4px solid #666;
-        padding: 20px;
-        margin: 20px 0;
-        border-radius: 0 10px 10px 0;
-      }
-
-      .instruction-title {
-        color: #fff;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      .instruction-text {
-        color: #888;
-        line-height: 1.6;
-      }
-
-      .action-buttons {
-        display: flex;
-        gap: 15px;
-        margin-top: 30px;
-      }
-
-      .action-btn {
-        flex: 1;
-        padding: 15px 20px;
-        border: none;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 1px solid #444;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #444 0%, #555 100%);
-        color: #fff;
-      }
-
-      .btn-primary:hover {
-        background: linear-gradient(135deg, #555 0%, #666 100%);
-        transform: translateY(-2px);
-      }
-
-      .btn-secondary {
-        background: #222;
-        color: #888;
-      }
-
-      .btn-secondary:hover {
-        background: #333;
-        color: #fff;
-      }
-
-      /* تأثيرات */
-      .confetti-particle {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background: #444;
-        animation: confetti-fall 3s linear infinite;
-      }
-
-      @keyframes confetti-fall {
-        0% {
-          transform: translateY(-100vh) rotate(0deg);
-          opacity: 1;
+        /* شريط VOX العلوي */
+        .vox-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #333;
         }
-        100% {
-          transform: translateY(100vh) rotate(360deg);
-          opacity: 0;
-        }
-      }
 
-      /* تجاوب الشاشات الصغيرة */
-      @media (max-width: 768px) {
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .vox-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
         .header-nav {
-          display: none;
+            display: flex;
+            gap: 30px;
         }
 
-        .media-container {
-          grid-template-columns: 1fr;
-          gap: 20px;
+        .nav-item {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .date-time-selector {
-          grid-template-columns: 1fr;
+        .nav-item:hover {
+            background: #d40f7d;
+            color: #fff;
+            transform: translateY(-2px);
         }
 
-        .booking-info-header {
-          grid-template-columns: 1fr;
-          gap: 15px;
+        /* بريدكرامب التنقل */
+        .breadcrumb {
+            background: #151515;
+            padding: 15px 0;
+            border-bottom: 1px solid #222;
         }
 
-        .seat {
-          width: 24px;
-          height: 24px;
-          font-size: 8px;
+        .breadcrumb-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #888;
         }
 
-        .row-seats {
-          gap: 4px;
+        .breadcrumb a {
+            color: #d40f7d;
+            text-decoration: none;
         }
 
-        .seat-legend {
-          gap: 15px;
+        .breadcrumb a:hover {
+            color: #ff4da6;
         }
 
-        .summary-details {
-          grid-template-columns: 1fr;
+        /* المراحل */
+        .stage {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        /* المرحلة الأولى - إعلان الفوز */
+        .winner-announcement {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 20px;
+            padding: 0;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid #333;
+        }
+
+        .winner-header {
+            background: linear-gradient(135deg, #333 0%, #444 100%);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #555;
+        }
+
+        .congratulations-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .winner-title {
-          font-size: 2rem;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            line-height: 1.1;
+        }
+
+        .prize-description {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 0;
+            font-weight: 300;
+        }
+
+        .winner-content {
+            padding: 40px 30px;
+            text-align: center;
         }
 
         .prize-showcase {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .ticket-card {
-          padding: 20px 10px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
+            padding: 25px 15px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid #444;
+        }
+
+        .ticket-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border-color: #555;
         }
 
         .ticket-icon {
-          font-size: 2rem;
+            font-size: 2.5rem;
+            color: #888;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        .ticket-label {
+            color: #ccc;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .prize-value {
+            background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #444;
         }
 
         .value-amount {
-          font-size: 1.8rem;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .value-description {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        .claim-section {
+            padding: 30px;
+            background: rgba(255,255,255,0.02);
+            margin-top: 20px;
         }
 
         .claim-tickets-btn {
-          padding: 15px 30px;
-          font-size: 1.1rem;
+            background: linear-gradient(135deg, #d40f7d 0%, #b30d69 100%);
+            color: #fff;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(212, 15, 125, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #ff4da6;
         }
 
-        .winner-content,
-        .claim-section {
-          padding: 20px;
+        .claim-tickets-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(212, 15, 125, 0.6);
+            background: linear-gradient(135deg, #ff4da6 0%, #d40f7d 100%);
+        }
+
+        .terms-notice {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* المرحلة الثانية - تفاصيل الفيلم */
+        .movie-details-section {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .movie-header {
+            background: linear-gradient(135deg, #222 0%, #333 100%);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .movie-poster-small {
+            width: 80px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #444;
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .movie-rating-badge {
+            background: #444;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+        }
+
+        .movie-meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .media-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .trailer-section {
+            position: relative;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid #333;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .poster-section {
+            display: flex;
+            justify-content: center;
+        }
+
+        .movie-poster-large {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            border: 1px solid #333;
+        }
+
+        /* اختيار التاريخ والوقت */
+        .booking-controls {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .date-time-selector {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .date-section h3,
+        .time-section h3 {
+            color: #d40f7d;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
         .date-options {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .date-option {
-          padding: 10px 12px;
-          font-size: 0.9rem;
+            background: #333;
+            border: 2px solid transparent;
+            color: #ccc;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: right;
         }
 
-        .ticket-details-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
+        .date-option:hover {
+            background: #3d3d3d;
+            color: #fff;
         }
 
-        .action-buttons {
-          flex-direction: column;
+        .date-option.active {
+            border-color: #d40f7d;
+            background: #3d3d3d;
+            color: #fff;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .cinema-venue {
+            color: #d40f7d;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .hall-category {
+            color: #888;
+            font-size: 0.9rem;
+            margin: 10px 0 8px 0;
+        }
+
+        .time-slot {
+            background: #444;
+            color: #ccc;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #555;
+        }
+
+        .time-slot:hover {
+            background: #555;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .time-slot.occupied {
+            background: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+            border-color: #333;
+        }
+
+        .time-slot.selected {
+            background: #d40f7d;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(212, 15, 125, 0.4);
+            border-color: #ff4da6;
+        }
+
+        /* المرحلة الثالثة - اختيار المقاعد */
+        .seats-selection {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .booking-info-header {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .info-item h4 {
+            color: #d40f7d;
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .screen-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .cinema-screen {
+            width: 60%;
+            height: 40px;
+            background: linear-gradient(45deg, #333, #555);
+            margin: 0 auto 20px;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            transform: perspective(300px) rotateX(-15deg);
+            border: 1px solid #666;
+        }
+
+        .screen-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* تخطيط المقاعد */
+        .seats-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .seats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .seat-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .row-label {
+            width: 30px;
+            text-align: center;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .row-seats {
+            display: flex;
+            gap: 6px;
+        }
+
+        .seat {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .seat.available {
+            background: #333;
+            border: 2px solid #444;
+            color: #666;
+        }
+
+        .seat.selected {
+            background: #d40f7d;
+            border: 2px solid #ff4da6;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(212, 15, 125, 0.5);
+        }
+
+        .seat.occupied {
+            background: #222;
+            border: 2px solid #333;
+            cursor: not-allowed;
+            opacity: 0.4;
+            color: #444;
+        }
+
+        .seat.premium {
+            background: #444;
+            border: 2px solid #555;
+            color: #888;
+        }
+
+        .seat.premium.selected {
+            background: #d40f7d;
+            border: 2px solid #ff4da6;
+            color: #fff;
+        }
+
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            background: #d40f7d;
+            color: #fff;
+        }
+
+        /* مفتاح المقاعد */
+        .seat-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+        }
+
+        .legend-seat {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-seat.available { background: #333; border: 1px solid #444; }
+        .legend-seat.selected { background: #d40f7d; border: 1px solid #ff4da6; }
+        .legend-seat.occupied { background: #222; border: 1px solid #333; }
+        .legend-seat.premium { background: #444; border: 1px solid #555; }
+
+        /* ملخص الحجز */
+        .booking-summary {
+            background: #222;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid #333;
+        }
+
+        .summary-header {
+            color: #d40f7d;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .summary-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .summary-item .label {
+            font-weight: 500;
+        }
+
+        .summary-item .value {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .selected-seats-display {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #444;
+        }
+
+        .confirm-button {
+            width: 100%;
+            background: linear-gradient(135deg, #d40f7d 0%, #b30d69 100%);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #ff4da6;
+        }
+
+        .confirm-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 15, 125, 0.4);
+            background: linear-gradient(135deg, #ff4da6 0%, #d40f7d 100%);
+        }
+
+        .confirm-button:disabled {
+            background: #2a2a2a;
+            cursor: not-allowed;
+            opacity: 0.6;
+            border-color: #333;
+        }
+
+        /* المرحلة الرابعة - تأكيد الحجز */
+        .booking-confirmation {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 0;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid #333;
+        }
+
+        .confirmation-header {
+            background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #666;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .confirmation-title {
-          font-size: 2rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .booking-details {
+            padding: 40px 30px;
+        }
+
+        .booking-reference {
+            background: #222;
+            border: 2px dashed #444;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .reference-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
 
         .reference-number {
-          font-size: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 3px;
+            font-family: 'Courier New', monospace;
         }
-      }
+
+        .ticket-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .detail-section {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .detail-title {
+            color: #d40f7d;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+            color: #888;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item .value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .cost-breakdown {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #3d3d3d;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #888;
+        }
+
+        .cost-item.total {
+            border-top: 2px solid #444;
+            margin-top: 10px;
+            padding-top: 15px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .cost-item .amount {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .cost-item.free .amount {
+            color: #666;
+            font-size: 1.5rem;
+        }
+
+        .pickup-instructions {
+            background: #222;
+            border-left: 4px solid #666;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .instruction-title {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .instruction-text {
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #444;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d40f7d 0%, #b30d69 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff4da6 0%, #d40f7d 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #222;
+            color: #888;
+        }
+
+        .btn-secondary:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        /* تأثيرات */
+        .confetti-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #444;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* تجاوب الشاشات الصغيرة - محسن */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 0;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .vox-header {
+                padding: 12px 0;
+            }
+
+            .vox-logo {
+                font-size: 1.5rem;
+            }
+
+            .breadcrumb {
+                padding: 10px 0;
+            }
+
+            .breadcrumb-content {
+                padding: 0 15px;
+                font-size: 0.85rem;
+            }
+
+            .stage {
+                padding: 15px;
+                margin: 0;
+            }
+
+            /* المرحلة الأولى */
+            .winner-announcement {
+                margin: 15px 0;
+                border-radius: 15px;
+            }
+
+            .winner-header {
+                padding: 25px 20px;
+            }
+
+            .winner-title {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+
+            .winner-content {
+                padding: 25px 20px;
+            }
+
+            .prize-showcase {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin: 25px 0;
+            }
+
+            .ticket-card {
+                padding: 20px 10px;
+            }
+
+            .ticket-icon {
+                font-size: 2rem;
+            }
+
+            .value-amount {
+                font-size: 1.8rem;
+            }
+
+            .claim-tickets-btn {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+
+            .claim-section {
+                padding: 20px;
+            }
+
+            /* المرحلة الثانية */
+            .media-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .movie-header {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .movie-poster-small {
+                width: 120px;
+                height: 180px;
+                align-self: center;
+            }
+
+            .date-time-selector {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .date-options {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .date-option {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+                text-align: center;
+            }
+
+            .time-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .time-slot {
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+
+            /* المرحلة الثالثة - اختيار المقاعد محسن */
+            .seats-selection {
+                padding: 20px 15px;
+                margin: 15px 0;
+            }
+
+            .booking-info-header {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+
+            .info-item {
+                text-align: center;
+                padding: 10px;
+                border-bottom: 1px solid #333;
+            }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+            .info-item h4 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .info-item p {
+                font-size: 0.9rem;
+            }
+
+            .screen-container {
+                margin: 25px 0;
+            }
+
+            .cinema-screen {
+                width: 80%;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .screen-label {
+                font-size: 0.8rem;
+                margin-top: 8px;
+            }
+
+            /* تحسين المقاعد للهواتف */
+            .seats-container {
+                padding: 15px 0;
+                max-width: 100%;
+            }
+
+            .seats-grid {
+                gap: 10px;
+                padding: 0 5px;
+            }
+
+            .seat-row {
+                gap: 6px;
+                justify-content: center;
+            }
+
+            .row-label {
+                width: 25px;
+                font-size: 0.8rem;
+                color: #888;
+            }
+
+            .row-seats {
+                gap: 4px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 2px;
+            }
+
+            .seat {
+                width: 30px;
+                height: 30px;
+                font-size: 10px;
+                min-width: 30px;
+                flex-shrink: 0;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+
+            .seat:hover:not(.occupied) {
+                transform: scale(1.15);
+            }
+
+            /* مفتاح المقاعد محسن */
+            .seat-legend {
+                gap: 20px;
+                margin: 25px 0;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                padding: 0 10px;
+            }
+
+            .legend-item {
+                gap: 8px;
+                font-size: 0.85rem;
+                margin: 5px 0;
+            }
+
+            .legend-seat {
+                width: 18px;
+                height: 18px;
+                border-radius: 4px;
+            }
+
+            /* ملخص الحجز محسن */
+            .booking-summary {
+                padding: 20px 15px;
+                margin-top: 25px;
+            }
+
+            .summary-header {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .summary-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .summary-item {
+                padding: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            .selected-seats-display {
+                padding: 15px;
+                margin: 15px 0;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+
+            .selected-seats-display strong {
+                display: block;
+                margin-bottom: 8px;
+                color: #d40f7d;
+            }
+
+            .confirm-button {
+                padding: 18px 15px;
+                font-size: 1.2rem;
+                border-radius: 12px;
+                margin-top: 20px;
+            }
+
+            /* المرحلة الرابعة */
+            .booking-confirmation {
+                margin: 15px 0;
+            }
+
+            .confirmation-header {
+                padding: 30px 20px;
+            }
+
+            .confirmation-title {
+                font-size: 2rem;
+            }
+
+            .success-icon {
+                font-size: 3rem;
+            }
+
+            .booking-details {
+                padding: 25px 20px;
+            }
+
+            .booking-reference {
+                padding: 20px 15px;
+                margin-bottom: 25px;
+            }
+
+            .reference-number {
+                font-size: 1.4rem;
+                letter-spacing: 1px;
+            }
+
+            .ticket-details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 25px;
+            }
+
+            .detail-section {
+                padding: 15px;
+            }
+
+            .detail-item {
+                padding: 10px 0;
+                font-size: 0.9rem;
+            }
+
+            .cost-breakdown {
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .cost-item {
+                padding: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            .cost-item.total {
+                font-size: 1.1rem;
+                padding-top: 18px;
+            }
+
+            .pickup-instructions {
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .instruction-title {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+
+            .instruction-text {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 25px;
+            }
+
+            .action-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            /* تحسينات إضافية للهواتف */
+            .movie-details-section,
+            .booking-controls {
+                margin: 15px 0;
+                border-radius: 12px;
+            }
+
+            .booking-controls {
+                padding: 15px;
+            }
+
+            .hall-category {
+                margin: 15px 0 10px 0;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+
+            .cinema-venue {
+                font-size: 1.2rem;
+                margin: 15px 0;
+                text-align: center;
+            }
+
+            /* تحسين التمرير الأفقي للمقاعد */
+            .seats-container {
+                overflow-x: auto;
+                overflow-y: visible;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .seats-grid {
+                min-width: 380px;
+                width: max-content;
+                margin: 0 auto;
+            }
+
+            /* إضافة هامش أمان للمحتوى */
+            .stage {
+                padding-bottom: 30px;
+            }
+        }
+
+        /* تحسينات للشاشات الصغيرة جداً */
+        @media (max-width: 480px) {
+            .seat {
+                width: 26px;
+                height: 26px;
+                font-size: 9px;
+            }
+
+            .row-seats {
+                gap: 3px;
+            }
+
+            .seats-grid {
+                min-width: 340px;
+                gap: 8px;
+            }
+
+            .prize-showcase {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .winner-title {
+                font-size: 1.8rem;
+            }
+
+            .date-options {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .time-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-summary {
+                padding: 15px 10px;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <!-- شريط VOX العلوي -->
     <header class="vox-header">
-      <div class="header-content">
-        <a href="#" class="vox-logo">VOX</a>
-        <nav class="header-nav">
-          <a href="#" class="nav-item">الأفلام</a>
-          <a href="#" class="nav-item">السينمات</a>
-          <a href="#" class="nav-item">العروض</a>
-          <a href="#" class="nav-item">احجز الآن</a>
-        </nav>
-      </div>
+        <div class="header-content">
+            <a href="#" class="vox-logo">VOX</a>
+            <nav class="header-nav">
+                <a href="#" class="nav-item">الأفلام</a>
+                <a href="#" class="nav-item">السينمات</a>
+                <a href="#" class="nav-item">العروض</a>
+                <a href="#" class="nav-item">احجز الآن</a>
+            </nav>
+        </div>
     </header>
 
     <!-- مسار التنقل -->
     <div class="breadcrumb">
-      <div class="breadcrumb-content">
-        <a href="#">الرئيسية</a> > <a href="#">الأفلام</a> > PROJECT X > حجز
-        التذاكر
-      </div>
+        <div class="breadcrumb-content">
+            <a href="#">الرئيسية</a> > <a href="#">الأفلام</a> > PROJECT X > حجز التذاكر
+        </div>
     </div>
 
     <!-- المرحلة الأولى: إعلان الفوز -->
     <div id="stage1" class="stage active">
-      <div class="winner-announcement">
-        <div class="winner-header">
-          <div class="congratulations-badge">🏆 تهانينا!</div>
-          <h1 class="winner-title">فائز محظوظ!</h1>
-          <p class="prize-description">لقد تم اختيارك للفوز بجائزة استثنائية</p>
+        <div class="winner-announcement">
+            <div class="winner-header">
+                <div class="congratulations-badge">🏆 تهانينا!</div>
+                <h1 class="winner-title">فائز محظوظ!</h1>
+                <p class="prize-description">لقد تم اختيارك للفوز بجائزة استثنائية</p>
+            </div>
+            
+            <div class="winner-content">
+                <div class="prize-showcase">
+                    <div class="ticket-card">
+                        <div class="ticket-icon">🎫</div>
+                        <div class="ticket-label">تذكرة #1</div>
+                    </div>
+                    <div class="ticket-card">
+                        <div class="ticket-icon">🎫</div>
+                        <div class="ticket-label">تذكرة #2</div>
+                    </div>
+                    <div class="ticket-card">
+                        <div class="ticket-icon">🎫</div>
+                        <div class="ticket-label">تذكرة #3</div>
+                    </div>
+                    <div class="ticket-card">
+                        <div class="ticket-icon">🎫</div>
+                        <div class="ticket-label">تذكرة #4</div>
+                    </div>
+                </div>
+
+                <div class="prize-value">
+                    <div class="value-amount">4 تذاكر مجانية</div>
+                    <div class="value-description">لفيلم PROJECT X في قاعات VOX السينمائية</div>
+                </div>
+
+                <div class="claim-section">
+                    <button class="claim-tickets-btn" onclick="showStage(2)">
+                        🎬 احصل على جائزتك الآن
+                    </button>
+                    <div class="terms-notice">
+                        * العرض ساري لمدة محدودة | شروط وأحكام المسابقة تطبق
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="winner-content">
-          <div class="prize-showcase">
-            <div class="ticket-card">
-              <div class="ticket-icon">🎫</div>
-              <div class="ticket-label">تذكرة #1</div>
-            </div>
-            <div class="ticket-card">
-              <div class="ticket-icon">🎫</div>
-              <div class="ticket-label">تذكرة #2</div>
-            </div>
-            <div class="ticket-card">
-              <div class="ticket-icon">🎫</div>
-              <div class="ticket-label">تذكرة #3</div>
-            </div>
-            <div class="ticket-card">
-              <div class="ticket-icon">🎫</div>
-              <div class="ticket-label">تذكرة #4</div>
-            </div>
-          </div>
-
-          <div class="prize-value">
-            <div class="value-amount">4 تذاكر مجانية</div>
-            <div class="value-description">
-              لفيلم PROJECT X في قاعات VOX السينمائية
-            </div>
-          </div>
-
-          <div class="claim-section">
-            <button class="claim-tickets-btn" onclick="showStage(2)">
-              🎬 احصل على جائزتك الآن
-            </button>
-            <div class="terms-notice">
-              * العرض ساري لمدة محدودة | شروط وأحكام المسابقة تطبق
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- المرحلة الثانية: تفاصيل الفيلم وأوقات العرض -->
     <div id="stage2" class="stage">
-      <div class="movie-details-section">
-        <div class="movie-header">
-          <img
-            src="https://assets.voxcinemas.com/posters/P_HO00012071_1746774216441.jpg"
-            alt="PROJECT X"
-            class="movie-poster-small"
-          />
-          <div class="movie-info">
-            <h2 class="movie-title">PROJECT X</h2>
-            <span class="movie-rating-badge">G</span>
-            <div class="movie-meta">أكشن، مغامرة | 2025 | 120 دقيقة</div>
-          </div>
+        <div class="movie-details-section">
+            <div class="movie-header">
+                <img src="https://assets.voxcinemas.com/posters/P_HO00012071_1746774216441.jpg" 
+                     alt="PROJECT X" class="movie-poster-small">
+                <div class="movie-info">
+                    <h2 class="movie-title">PROJECT X</h2>
+                    <span class="movie-rating-badge">G</span>
+                    <div class="movie-meta">
+                        أكشن، مغامرة | 2025 | 120 دقيقة
+                    </div>
+                </div>
+            </div>
+            
+            <div class="media-container">
+                <div class="trailer-section">
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/aBN1zcmmhHk?si=8c2W1x1y_e-9p_G7"
+                            title="PROJECT X - Official Trailer"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                <div class="poster-section">
+                    <img src="https://assets.voxcinemas.com/posters/P_HO00012071_1746774216441.jpg" 
+                         alt="PROJECT X" class="movie-poster-large">
+                </div>
+            </div>
         </div>
 
-        <div class="media-container">
-          <div class="trailer-section">
-            <div class="video-wrapper">
-              <iframe
-                src="https://www.youtube.com/embed/aBN1zcmmhHk?si=8c2W1x1y_e-9p_G7"
-                title="PROJECT X - Official Trailer"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              >
-              </iframe>
+        <div class="booking-controls">
+            <div class="date-time-selector">
+                <div class="date-section">
+                    <h3>اختر التاريخ</h3>
+                    <div class="date-options">
+                        <div class="date-option active" onclick="selectDate(this)" data-date="اليوم - 24 مايو 2025">
+                            <strong>اليوم</strong><br>
+                            <small>السبت 24 مايو 2025</small>
+                        </div>
+                        <div class="date-option" onclick="selectDate(this)" data-date="غداً - 25 مايو 2025">
+                            <strong>غداً</strong><br>
+                            <small>الأحد 25 مايو 2025</small>
+                        </div>
+                        <div class="date-option" onclick="selectDate(this)" data-date="الاثنين - 26 مايو 2025">
+                            <strong>الاثنين</strong><br>
+                            <small>26 مايو 2025</small>
+                        </div>
+                        <div class="date-option" onclick="selectDate(this)" data-date="الثلاثاء - 27 مايو 2025">
+                            <strong>الثلاثاء</strong><br>
+                            <small>27 مايو 2025</small>
+                        </div>
+                        <div class="date-option" onclick="selectDate(this)" data-date="الأربعاء - 28 مايو 2025">
+                            <strong>الأربعاء</strong><br>
+                            <small>28 مايو 2025</small>
+                        </div>
+                        <div class="date-option" onclick="selectDate(this)" data-date="الخميس - 29 مايو 2025">
+                            <strong>الخميس</strong><br>
+                            <small>29 مايو 2025</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="time-section">
+                    <h3>اختر الوقت والقاعة</h3>
+                    
+                    <div class="cinema-venue">🎬 مول مصر</div>
+                    
+                    <div class="hall-category">قاعة ماكس | MAX</div>
+                    <div class="time-grid">
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="9:00 مساءً - قاعة MAX">9:00 PM</button>
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="11:30 مساءً - قاعة MAX">11:30 PM</button>
+                    </div>
+                    
+                    <div class="hall-category">قاعة جولد | GOLD</div>
+                    <div class="time-grid">
+                        <button class="time-slot" onclick="selectTime(this)" 
+                                data-time="7:15 مساءً - قاعة GOLD">7:15 PM</button>
+                        <button class="time-slot" onclick="selectTime(this)" 
+                                data-time="9:45 مساءً - قاعة GOLD">9:45 PM</button>
+                        <button class="time-slot" onclick="selectTime(this)" 
+                                data-time="12:15 صباحاً - قاعة GOLD">12:15 AM</button>
+                    </div>
+                    
+                    <div class="hall-category">قاعة عادية | Standard</div>
+                    <div class="time-grid">
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="7:00 مساءً - قاعة Standard">7:00 PM</button>
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="8:00 مساءً - قاعة Standard">8:00 PM</button>
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="10:00 مساءً - قاعة Standard">10:00 PM</button>
+                        <button class="time-slot occupied" onclick="selectTime(this)" 
+                                data-time="11:30 مساءً - قاعة Standard">11:30 PM</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="poster-section">
-            <img
-              src="https://assets.voxcinemas.com/posters/P_HO00012071_1746774216441.jpg"
-              alt="PROJECT X"
-              class="movie-poster-large"
-            />
-          </div>
         </div>
-      </div>
-
-      <div class="booking-controls">
-        <div class="date-time-selector">
-          <div class="date-section">
-            <h3>اختر التاريخ</h3>
-            <div class="date-options">
-              <div
-                class="date-option active"
-                onclick="selectDate(this)"
-                data-date="اليوم - 24 مايو 2025"
-              >
-                <strong>اليوم</strong><br />
-                <small>السبت 24 مايو 2025</small>
-              </div>
-              <div
-                class="date-option"
-                onclick="selectDate(this)"
-                data-date="غداً - 25 مايو 2025"
-              >
-                <strong>غداً</strong><br />
-                <small>الأحد 25 مايو 2025</small>
-              </div>
-              <div
-                class="date-option"
-                onclick="selectDate(this)"
-                data-date="الاثنين - 26 مايو 2025"
-              >
-                <strong>الاثنين</strong><br />
-                <small>26 مايو 2025</small>
-              </div>
-              <div
-                class="date-option"
-                onclick="selectDate(this)"
-                data-date="الثلاثاء - 27 مايو 2025"
-              >
-                <strong>الثلاثاء</strong><br />
-                <small>27 مايو 2025</small>
-              </div>
-              <div
-                class="date-option"
-                onclick="selectDate(this)"
-                data-date="الأربعاء - 28 مايو 2025"
-              >
-                <strong>الأربعاء</strong><br />
-                <small>28 مايو 2025</small>
-              </div>
-              <div
-                class="date-option"
-                onclick="selectDate(this)"
-                data-date="الخميس - 29 مايو 2025"
-              >
-                <strong>الخميس</strong><br />
-                <small>29 مايو 2025</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="time-section">
-            <h3>اختر الوقت والقاعة</h3>
-
-            <div class="cinema-venue">🎬 مول مصر</div>
-
-            <div class="hall-category">قاعة ماكس | MAX</div>
-            <div class="time-grid">
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="9:00 مساءً - قاعة MAX"
-              >
-                9:00 PM
-              </button>
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="11:30 مساءً - قاعة MAX"
-              >
-                11:30 PM
-              </button>
-            </div>
-
-            <div class="hall-category">قاعة جولد | GOLD</div>
-            <div class="time-grid">
-              <button
-                class="time-slot"
-                onclick="selectTime(this)"
-                data-time="7:15 مساءً - قاعة GOLD"
-              >
-                7:15 PM
-              </button>
-              <button
-                class="time-slot"
-                onclick="selectTime(this)"
-                data-time="9:45 مساءً - قاعة GOLD"
-              >
-                9:45 PM
-              </button>
-              <button
-                class="time-slot"
-                onclick="selectTime(this)"
-                data-time="12:15 صباحاً - قاعة GOLD"
-              >
-                12:15 AM
-              </button>
-            </div>
-
-            <div class="hall-category">قاعة عادية | Standard</div>
-            <div class="time-grid">
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="7:00 مساءً - قاعة Standard"
-              >
-                7:00 PM
-              </button>
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="8:00 مساءً - قاعة Standard"
-              >
-                8:00 PM
-              </button>
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="10:00 مساءً - قاعة Standard"
-              >
-                10:00 PM
-              </button>
-              <button
-                class="time-slot occupied"
-                onclick="selectTime(this)"
-                data-time="11:30 مساءً - قاعة Standard"
-              >
-                11:30 PM
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- المرحلة الثالثة: اختيار المقاعد -->
     <div id="stage3" class="stage">
-      <div class="seats-selection">
-        <div class="booking-info-header">
-          <div class="info-item">
-            <h4>الفيلم</h4>
-            <p>PROJECT X</p>
-          </div>
-          <div class="info-item">
-            <h4>التاريخ والوقت</h4>
-            <p id="selectedDateTime">سيتم التحديد</p>
-          </div>
-          <div class="info-item">
-            <h4>القاعة</h4>
-            <p id="selectedHall">سيتم التحديد</p>
-          </div>
-        </div>
-
-        <div class="screen-container">
-          <div class="cinema-screen">شاشة السينما</div>
-          <div class="screen-label">جميع المقاعد تطل على الشاشة</div>
-        </div>
-
-        <div class="seats-container">
-          <div class="seats-grid" id="seatsGrid">
-            <!-- سيتم إنشاء المقاعد بواسطة JavaScript -->
-          </div>
-        </div>
-
-        <div class="seat-legend">
-          <div class="legend-item">
-            <div class="legend-seat available"></div>
-            <span>متاح</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-seat selected"></div>
-            <span>مختار</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-seat occupied"></div>
-            <span>محجوز</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-seat premium"></div>
-            <span>مميز</span>
-          </div>
-        </div>
-
-        <div class="booking-summary">
-          <div class="summary-header">ملخص الحجز</div>
-
-          <div class="summary-details">
-            <div class="summary-item">
-              <span class="label">عدد التذاكر:</span>
-              <span class="value" id="ticketCount">0/4</span>
+        <div class="seats-selection">
+            <div class="booking-info-header">
+                <div class="info-item">
+                    <h4>الفيلم</h4>
+                    <p>PROJECT X</p>
+                </div>
+                <div class="info-item">
+                    <h4>التاريخ والوقت</h4>
+                    <p id="selectedDateTime">سيتم التحديد</p>
+                </div>
+                <div class="info-item">
+                    <h4>القاعة</h4>
+                    <p id="selectedHall">سيتم التحديد</p>
+                </div>
             </div>
-            <div class="summary-item">
-              <span class="label">إجمالي السعر:</span>
-              <span class="value">مجاناً 🎉</span>
+
+            <div class="screen-container">
+                <div class="cinema-screen">شاشة السينما</div>
+                <div class="screen-label">جميع المقاعد تطل على الشاشة</div>
             </div>
-          </div>
 
-          <div class="selected-seats-display">
-            <strong>المقاعد المختارة:</strong>
-            <div id="selectedSeatsDisplay">لم يتم اختيار مقاعد بعد</div>
-          </div>
+            <div class="seats-container">
+                <div class="seats-grid" id="seatsGrid">
+                    <!-- سيتم إنشاء المقاعد بواسطة JavaScript -->
+                </div>
+            </div>
 
-          <button id="confirmBooking" class="confirm-button" disabled>
-            تأكيد الحجز
-          </button>
+            <div class="seat-legend">
+                <div class="legend-item">
+                    <div class="legend-seat available"></div>
+                    <span>متاح</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat selected"></div>
+                    <span>مختار</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat occupied"></div>
+                    <span>محجوز</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-seat premium"></div>
+                    <span>مميز</span>
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <div class="summary-header">ملخص الحجز</div>
+                
+                <div class="summary-details">
+                    <div class="summary-item">
+                        <span class="label">عدد التذاكر:</span>
+                        <span class="value" id="ticketCount">0/4</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">إجمالي السعر:</span>
+                        <span class="value">مجاناً 🎉</span>
+                    </div>
+                </div>
+
+                <div class="selected-seats-display">
+                    <strong>المقاعد المختارة:</strong>
+                    <div id="selectedSeatsDisplay">لم يتم اختيار مقاعد بعد</div>
+                </div>
+
+                <button id="confirmBooking" class="confirm-button" disabled>
+                    تأكيد الحجز
+                </button>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- المرحلة الرابعة: تأكيد الحجز -->
     <div id="stage4" class="stage">
-      <div class="booking-confirmation">
-        <div class="confirmation-header">
-          <div class="success-icon">✅</div>
-          <h1 class="confirmation-title">تم الحجز بنجاح!</h1>
-          <p class="confirmation-subtitle">
-            تهانينا! تم تأكيد حجز تذاكرك المجانية
-          </p>
+        <div class="booking-confirmation">
+            <div class="confirmation-header">
+                <div class="success-icon">✅</div>
+                <h1 class="confirmation-title">تم الحجز بنجاح!</h1>
+                <p class="confirmation-subtitle">تهانينا! تم تأكيد حجز تذاكرك المجانية</p>
+            </div>
+            
+            <div class="booking-details">
+                <div class="booking-reference">
+                    <div class="reference-label">رقم الحجز</div>
+                    <div class="reference-number" id="bookingReference">VOX-000000</div>
+                </div>
+
+                <div class="ticket-details-grid">
+                    <div class="detail-section">
+                        <div class="detail-title">تفاصيل العرض</div>
+                        <div class="detail-item">
+                            <span>الفيلم:</span>
+                            <span class="value">PROJECT X</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>التاريخ:</span>
+                            <span class="value" id="finalDate">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>الوقت:</span>
+                            <span class="value" id="finalTime">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>القاعة:</span>
+                            <span class="value" id="finalHall">-</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="detail-title">تفاصيل المقاعد</div>
+                        <div class="detail-item">
+                            <span>عدد التذاكر:</span>
+                            <span class="value">4 تذاكر</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>المقاعد:</span>
+                            <span class="value" id="finalSeats">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>نوع المقعد:</span>
+                            <span class="value">عادي + مميز</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>الحالة:</span>
+                            <span class="value">مؤكد ✅</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cost-breakdown">
+                    <div class="detail-title">تفاصيل التكلفة</div>
+                    <div class="cost-item">
+                        <span>4 × تذكرة عادية</span>
+                        <span class="amount">720 جنيه</span>
+                    </div>
+                    <div class="cost-item">
+                        <span>خصم المسابقة</span>
+                        <span class="amount">-720 جنيه</span>
+                    </div>
+                    <div class="cost-item total free">
+                        <span>الإجمالي النهائي</span>
+                        <span class="amount">0.00 جنيه 🎉</span>
+                    </div>
+                </div>
+
+                <div class="pickup-instructions">
+                    <div class="instruction-title">📍 تعليمات استلام التذاكر</div>
+                    <div class="instruction-text">
+                        يرجى التوجه إلى <strong>كشك الحجز</strong> في سينما VOX مول مصر قبل موعد العرض بـ 30 دقيقة على الأقل.<br>
+                        أحضر معك <strong>رقم الحجز</strong> المذكور أعلاه وبطاقة هوية صالحة.<br>
+                        سيتم طباعة تذاكرك مجاناً في الكشك.
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn btn-primary" onclick="window.print()">
+                        🖨️ طباعة تأكيد الحجز
+                    </button>
+                    <button class="action-btn btn-secondary" onclick="showStage(1)">
+                        🏠 العودة للرئيسية
+                    </button>
+                </div>
+            </div>
         </div>
-
-        <div class="booking-details">
-          <div class="booking-reference">
-            <div class="reference-label">رقم الحجز</div>
-            <div class="reference-number" id="bookingReference">VOX-000000</div>
-          </div>
-
-          <div class="ticket-details-grid">
-            <div class="detail-section">
-              <div class="detail-title">تفاصيل العرض</div>
-              <div class="detail-item">
-                <span>الفيلم:</span>
-                <span class="value">PROJECT X</span>
-              </div>
-              <div class="detail-item">
-                <span>التاريخ:</span>
-                <span class="value" id="finalDate">-</span>
-              </div>
-              <div class="detail-item">
-                <span>الوقت:</span>
-                <span class="value" id="finalTime">-</span>
-              </div>
-              <div class="detail-item">
-                <span>القاعة:</span>
-                <span class="value" id="finalHall">-</span>
-              </div>
-            </div>
-
-            <div class="detail-section">
-              <div class="detail-title">تفاصيل المقاعد</div>
-              <div class="detail-item">
-                <span>عدد التذاكر:</span>
-                <span class="value">4 تذاكر</span>
-              </div>
-              <div class="detail-item">
-                <span>المقاعد:</span>
-                <span class="value" id="finalSeats">-</span>
-              </div>
-              <div class="detail-item">
-                <span>نوع المقعد:</span>
-                <span class="value">عادي + مميز</span>
-              </div>
-              <div class="detail-item">
-                <span>الحالة:</span>
-                <span class="value">مؤكد ✅</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="cost-breakdown">
-            <div class="detail-title">تفاصيل التكلفة</div>
-            <div class="cost-item">
-              <span>4 × تذكرة عادية</span>
-              <span class="amount">200 جنيه</span>
-            </div>
-            <div class="cost-item">
-              <span>خصم المسابقة</span>
-              <span class="amount">-200 جنيه</span>
-            </div>
-            <div class="cost-item total free">
-              <span>الإجمالي النهائي</span>
-              <span class="amount">0.00 جنيه 🎉</span>
-            </div>
-          </div>
-
-          <div class="pickup-instructions">
-            <div class="instruction-title">📍 تعليمات استلام التذاكر</div>
-            <div class="instruction-text">
-              يرجى التوجه إلى <strong>كشك الحجز</strong> في سينما VOX مول مصر
-              قبل موعد العرض بـ 30 دقيقة على الأقل.<br />
-              أحضر معك <strong>رقم الحجز</strong> المذكور أعلاه وبطاقة هوية
-              صالحة.<br />
-              سيتم طباعة تذاكرك مجاناً في الكشك.
-            </div>
-          </div>
-
-          <div class="action-buttons">
-            <button class="action-btn btn-primary" onclick="window.print()">
-              🖨️ طباعة تأكيد الحجز
-            </button>
-            <button class="action-btn btn-secondary" onclick="showStage(1)">
-              🏠 العودة للرئيسية
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <script>
-      // المتغيرات العامة
-      let selectedSeats = [];
-      const maxSeats = 4;
-      let selectedShowTime = null;
-      let selectedDate = "اليوم - 24 مايو 2025";
-      let bookingNumber = null;
+        // المتغيرات العامة
+        let selectedSeats = [];
+        const maxSeats = 4;
+        let selectedShowTime = null;
+        let selectedDate = "اليوم - 24 مايو 2025";
+        let bookingNumber = null;
 
-      // الانتقال بين المراحل
-      function showStage(stageNumber) {
-        document.querySelectorAll(".stage").forEach((stage) => {
-          stage.classList.remove("active");
-        });
-        document.getElementById(`stage${stageNumber}`).classList.add("active");
+        // الانتقال بين المراحل
+        function showStage(stageNumber) {
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+            document.getElementById(`stage${stageNumber}`).classList.add('active');
 
-        if (stageNumber === 3) {
-          generateSeatsLayout();
-        } else if (stageNumber === 4) {
-          generateBookingConfirmation();
-        }
-      }
-
-      // اختيار التاريخ
-      function selectDate(element) {
-        document.querySelectorAll(".date-option").forEach((opt) => {
-          opt.classList.remove("active");
-        });
-        element.classList.add("active");
-        selectedDate = element.dataset.date || element.textContent.trim();
-      }
-
-      // اختيار الوقت
-      function selectTime(button) {
-        if (button.classList.contains("occupied")) {
-          alert("عذراً، هذا العرض مكتمل");
-          return;
+            if (stageNumber === 3) {
+                generateSeatsLayout();
+            } else if (stageNumber === 4) {
+                generateBookingConfirmation();
+            }
         }
 
-        document.querySelectorAll(".time-slot").forEach((slot) => {
-          slot.classList.remove("selected");
-        });
+        // اختيار التاريخ
+        function selectDate(element) {
+            document.querySelectorAll('.date-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            element.classList.add('active');
+            selectedDate = element.dataset.date || element.textContent.trim();
+        }
 
-        button.classList.add("selected");
-        selectedShowTime = button.dataset.time;
-
-        // تحديث معلومات الحجز
-        document.getElementById("selectedDateTime").textContent =
-          selectedDate + " - " + button.textContent;
-        document.getElementById("selectedHall").textContent =
-          selectedShowTime.split(" - ")[1];
-
-        setTimeout(() => showStage(3), 1000);
-      }
-
-      // إنشاء تخطيط المقاعد
-      function generateSeatsLayout() {
-        const grid = document.getElementById("seatsGrid");
-        grid.innerHTML = "";
-
-        const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        const seatsPerRow = 16;
-
-        rows.forEach((rowLetter, rowIndex) => {
-          const rowElement = document.createElement("div");
-          rowElement.className = "seat-row";
-
-          // تسمية الصف
-          const label = document.createElement("div");
-          label.className = "row-label";
-          label.textContent = rowLetter;
-          rowElement.appendChild(label);
-
-          // مقاعد الصف
-          const seatsContainer = document.createElement("div");
-          seatsContainer.className = "row-seats";
-
-          for (let seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
-            const seat = document.createElement("div");
-            seat.className = "seat available";
-            seat.dataset.row = rowLetter;
-            seat.dataset.number = seatNum;
-            seat.textContent = seatNum;
-
-            // مقاعد مميزة (الصفوف الأولى)
-            if (rowIndex < 3) {
-              seat.classList.add("premium");
+        // اختيار الوقت
+        function selectTime(button) {
+            if (button.classList.contains('occupied')) {
+                alert('عذراً، هذا العرض مكتمل');
+                return;
             }
 
-            // مقاعد محجوزة عشوائياً
-            if (Math.random() < 0.3) {
-              seat.classList.remove("available");
-              seat.classList.add("occupied");
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            button.classList.add('selected');
+            selectedShowTime = button.dataset.time;
+            
+            // تحديث معلومات الحجز
+            document.getElementById('selectedDateTime').textContent = selectedDate + ' - ' + button.textContent;
+            document.getElementById('selectedHall').textContent = selectedShowTime.split(' - ')[1];
+
+            setTimeout(() => showStage(3), 1000);
+        }
+
+        // إنشاء تخطيط المقاعد
+        function generateSeatsLayout() {
+            const grid = document.getElementById('seatsGrid');
+            grid.innerHTML = '';
+
+            const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            const seatsPerRow = 16;
+
+            rows.forEach((rowLetter, rowIndex) => {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'seat-row';
+
+                // تسمية الصف
+                const label = document.createElement('div');
+                label.className = 'row-label';
+                label.textContent = rowLetter;
+                rowElement.appendChild(label);
+
+                // مقاعد الصف
+                const seatsContainer = document.createElement('div');
+                seatsContainer.className = 'row-seats';
+
+                for (let seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
+                    const seat = document.createElement('div');
+                    seat.className = 'seat available';
+                    seat.dataset.row = rowLetter;
+                    seat.dataset.number = seatNum;
+                    seat.textContent = seatNum;
+
+                    // مقاعد مميزة (الصفوف الأولى)
+                    if (rowIndex < 3) {
+                        seat.classList.add('premium');
+                    }
+
+                    // مقاعد محجوزة عشوائياً
+                    if (Math.random() < 0.3) {
+                        seat.classList.remove('available');
+                        seat.classList.add('occupied');
+                    }
+
+                    // فجوة في الوسط (ممر)
+                    if (seatNum === 8) {
+                        const gap = document.createElement('div');
+                        gap.style.width = '20px';
+                        seatsContainer.appendChild(gap);
+                    }
+
+                    seat.addEventListener('click', () => selectSeat(seat));
+                    seatsContainer.appendChild(seat);
+                }
+
+                rowElement.appendChild(seatsContainer);
+                grid.appendChild(rowElement);
+            });
+        }
+
+        // اختيار المقعد
+        function selectSeat(seat) {
+            if (seat.classList.contains('occupied')) return;
+
+            const seatId = `${seat.dataset.row}${seat.dataset.number}`;
+
+            if (seat.classList.contains('selected')) {
+                // إلغاء الاختيار
+                seat.classList.remove('selected');
+                seat.classList.add('available');
+                selectedSeats = selectedSeats.filter(id => id !== seatId);
+            } else {
+                // اختيار المقعد
+                if (selectedSeats.length >= maxSeats) {
+                    alert(`يمكنك اختيار ${maxSeats} مقاعد فقط`);
+                    return;
+                }
+                
+                seat.classList.remove('available');
+                seat.classList.add('selected');
+                selectedSeats.push(seatId);
             }
 
-            // فجوة في الوسط (ممر)
-            if (seatNum === 8) {
-              const gap = document.createElement("div");
-              gap.style.width = "20px";
-              seatsContainer.appendChild(gap);
+            updateBookingSummary();
+        }
+
+        // تحديث ملخص الحجز
+        function updateBookingSummary() {
+            document.getElementById('ticketCount').textContent = `${selectedSeats.length}/${maxSeats}`;
+            
+            const seatsDisplay = document.getElementById('selectedSeatsDisplay');
+            if (selectedSeats.length === 0) {
+                seatsDisplay.textContent = 'لم يتم اختيار مقاعد بعد';
+            } else {
+                seatsDisplay.textContent = selectedSeats.join(', ');
             }
 
-            seat.addEventListener("click", () => selectSeat(seat));
-            seatsContainer.appendChild(seat);
-          }
+            const confirmBtn = document.getElementById('confirmBooking');
+            confirmBtn.disabled = selectedSeats.length !== maxSeats;
+        }
 
-          rowElement.appendChild(seatsContainer);
-          grid.appendChild(rowElement);
+        // إنشاء رقم حجز عشوائي
+        function generateBookingNumber() {
+            const timestamp = Date.now().toString().slice(-6);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `VOX-${timestamp}${random}`;
+        }
+
+        // تأكيد الحجز وإنشاء الصفحة النهائية
+        function generateBookingConfirmation() {
+            bookingNumber = generateBookingNumber();
+            
+            // تحديث رقم الحجز
+            document.getElementById('bookingReference').textContent = bookingNumber;
+            
+            // تحديث تفاصيل العرض
+            document.getElementById('finalDate').textContent = selectedDate.split(' - ')[0];
+            const timeOnly = selectedShowTime.split(' - ')[0];
+            document.getElementById('finalTime').textContent = timeOnly;
+            document.getElementById('finalHall').textContent = selectedShowTime.split(' - ')[1];
+            
+            // تحديث المقاعد
+            document.getElementById('finalSeats').textContent = selectedSeats.join(', ');
+        }
+
+        // تأثير الكونفيتي
+        function createConfetti() {
+            const container = document.querySelector('.winner-announcement');
+            if (!container) return;
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.backgroundColor = `hsl(${Math.random() * 60}, 30%, 60%)`;
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
+
+        // تهيئة الصفحة
+        window.addEventListener('load', () => {
+            createConfetti();
+
+            // زر تأكيد الحجز
+            document.getElementById('confirmBooking').addEventListener('click', () => {
+                if (selectedSeats.length === maxSeats && selectedShowTime) {
+                    showStage(4);
+                }
+            });
         });
-      }
-
-      // اختيار المقعد
-      function selectSeat(seat) {
-        if (seat.classList.contains("occupied")) return;
-
-        const seatId = `${seat.dataset.row}${seat.dataset.number}`;
-
-        if (seat.classList.contains("selected")) {
-          // إلغاء الاختيار
-          seat.classList.remove("selected");
-          seat.classList.add("available");
-          selectedSeats = selectedSeats.filter((id) => id !== seatId);
-        } else {
-          // اختيار المقعد
-          if (selectedSeats.length >= maxSeats) {
-            alert(`يمكنك اختيار ${maxSeats} مقاعد فقط`);
-            return;
-          }
-
-          seat.classList.remove("available");
-          seat.classList.add("selected");
-          selectedSeats.push(seatId);
-        }
-
-        updateBookingSummary();
-      }
-
-      // تحديث ملخص الحجز
-      function updateBookingSummary() {
-        document.getElementById(
-          "ticketCount"
-        ).textContent = `${selectedSeats.length}/${maxSeats}`;
-
-        const seatsDisplay = document.getElementById("selectedSeatsDisplay");
-        if (selectedSeats.length === 0) {
-          seatsDisplay.textContent = "لم يتم اختيار مقاعد بعد";
-        } else {
-          seatsDisplay.textContent = selectedSeats.join(", ");
-        }
-
-        const confirmBtn = document.getElementById("confirmBooking");
-        confirmBtn.disabled = selectedSeats.length !== maxSeats;
-      }
-
-      // إنشاء رقم حجز عشوائي
-      function generateBookingNumber() {
-        const timestamp = Date.now().toString().slice(-6);
-        const random = Math.floor(Math.random() * 1000)
-          .toString()
-          .padStart(3, "0");
-        return `VOX-${timestamp}${random}`;
-      }
-
-      // تأكيد الحجز وإنشاء الصفحة النهائية
-      function generateBookingConfirmation() {
-        bookingNumber = generateBookingNumber();
-
-        // تحديث رقم الحجز
-        document.getElementById("bookingReference").textContent = bookingNumber;
-
-        // تحديث تفاصيل العرض
-        document.getElementById("finalDate").textContent =
-          selectedDate.split(" - ")[0];
-        const timeOnly = selectedShowTime.split(" - ")[0];
-        document.getElementById("finalTime").textContent = timeOnly;
-        document.getElementById("finalHall").textContent =
-          selectedShowTime.split(" - ")[1];
-
-        // تحديث المقاعد
-        document.getElementById("finalSeats").textContent =
-          selectedSeats.join(", ");
-      }
-
-      // تأثير الكونفيتي
-      function createConfetti() {
-        const container = document.querySelector(".winner-announcement");
-        if (!container) return;
-
-        for (let i = 0; i < 50; i++) {
-          const particle = document.createElement("div");
-          particle.className = "confetti-particle";
-          particle.style.left = Math.random() * 100 + "%";
-          particle.style.backgroundColor = `hsl(${
-            Math.random() * 60
-          }, 30%, 60%)`;
-          particle.style.animationDelay = Math.random() * 2 + "s";
-
-          container.appendChild(particle);
-
-          setTimeout(() => particle.remove(), 3000);
-        }
-      }
-
-      // تهيئة الصفحة
-      window.addEventListener("load", () => {
-        createConfetti();
-
-        // زر تأكيد الحجز
-        document
-          .getElementById("confirmBooking")
-          .addEventListener("click", () => {
-            if (selectedSeats.length === maxSeats && selectedShowTime) {
-              showStage(4);
-            }
-          });
-      });
     </script>
-  </body>
+</body>
 </html>
